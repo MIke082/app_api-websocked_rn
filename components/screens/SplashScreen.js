@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, KeyboardAvoidingView ,TextInput } from 'react-native';
+import { View, StyleSheet, Image, TextInput } from 'react-native';
 import bitcoinImg from '../../assets/img/bitcoinImg.png'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -12,12 +12,18 @@ const SplashScreen = ({ navigation }) => {
 
     const authorization = () => {
         if(data.names && data.date === ''){
-            navigation.navigate('RestApi');
+            navigation.replace('RestApi');
            
         }else{
             console.error('Enter your name and date');
         }
     }
+
+    // const time = () => {
+    //     setTimeout = (() => {
+    //         navigation.navigate('RestApi')
+    //     }, 2000) 
+    // }
 
     return (
         <KeyboardAwareScrollView 
@@ -52,7 +58,7 @@ const SplashScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'white'  
+      backgroundColor: 'white',  
     },
     bitImg:{
         paddingTop: 40,

@@ -1,93 +1,91 @@
-import React, { Component } from 'react';
-import BtnSwitch from '../btnSwitch/BtnSwitch';
-import { getAllListCreator } from '../../store/actions/indes';
-import { connect } from 'react-redux';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import BtnSwitch from '../btnSwitch/BtnSwitch';
 
+const List = ({ navigation }) => {
+    const [todos, setTodos] = useState([]);
+    
 
-class RestApiScreens extends Component {
-
-    componentDidMount(){
-        this.props.lists();
+    const axiosList = () => {
+        fetch(`https://jsonplaceholder.typicode.com/albums`)
+            .then(response => response.json())
+            .then(json => setTodos(json))
     }
 
-    render() {
-        const maping = () => {
-            
-        }
-        const {navigation} = this.props;
-        return (
-            <ScrollView>
+    useEffect(() => {
+        axiosList();
+    }, [] )
+    
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Live Bitcoin rates</Text>
                 <View style={styles.listTable}>
-                        <Text style={styles.dataList}>ID</Text>
-                        <Text style={styles.dataList}>UserId</Text>
-                        <Text style={[styles.dataList, {marginLeft: 40}]}>Title</Text>
-                    </View>
-            {this.props.list.map((item, index)=> {
+                    <Text style={styles.dataList}>ID</Text>
+                    <Text style={styles.dataList}>UserId</Text>
+                    <Text style={[styles.dataList, {marginLeft: 40}]}>Title</Text>
+                </View>
+            {todos.map((item, index)=> {
                 for(let i = index; i < 10; i++){
                 return(
-                    <View key={index}  style={styles.listOutput}>
-                        <Text style={styles.dataListOutputId}>{item.id}</Text>
-                        <Text style={[styles.dataListOutputUserId]}>{item.userId}</Text>
-                        <Text style={styles.dataListOutputTitle}>{item.title}</Text>
+                    <View key={index} style={styles.listOutput}>
+                        <Text style={styles.dataListOutputId}>{item.userId} </Text>
+                        <Text style={[styles.dataListOutputUserId]}>{item.id} </Text>
+                        <Text style={styles.dataListOutputTitle}>{item.title} </Text>
                     </View>
-            )}}
-            )}
-                    <BtnSwitch navigation={navigation} />
+                )}
+            })}
 
-            </ScrollView>
-        );
-    };
+            <BtnSwitch style={styles.btnSwitch} navigation={navigation} />
+
+        </View>
+    );
 };
 
-const mapStateToProps = (state) => {
-    return{
-        list: state.listReducer
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return{
-        lists : () => {
-            dispatch(getAllListCreator())
-        }
-    }
-}
-
 const styles = StyleSheet.create({
-    listTable:{
-        flexDirection: 'row',
-        backgroundColor: 'grey',
-        height: 50,
-        alignItems: 'center',
+    container:{
+        backgroundColor: 'white'
     },
-    dataList:{
-        color: 'white',
-        marginLeft: 20,
-        fontSize: 20
+    title:{
+        color: 'green',
+        fontSize: 20,
+        textAlign: 'center',
+        marginBottom: 25
     },
-    listOutput:{
-        flexDirection: 'row',
-        height: 50,
-        alignItems: 'center',
-        
-    },
-    dataListOutputId:{
-        marginLeft: 25,
-        fontWeight: 'bold',
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: 'black'
-    },
-    dataListOutputUserId:{
-        marginLeft: 45,
-        fontWeight: 'bold'
-    },
-        dataListOutputTitle:{
-        marginLeft: 65,
-        fontWeight: 'bold'
-    }
-})
+        listTable:{
+            flexDirection: 'row',
+            backgroundColor: 'grey',
+            height: 50,
+            alignItems: 'center',
 
-export default connect(mapStateToProps, mapDispatchToProps)(RestApiScreens);
+        },
+        dataList:{
+            color: 'white',
+            marginLeft: 20,
+            fontSize: 20
+        },
+        listOutput:{
+            flexDirection: 'row',
+            height: 50,
+            alignItems: 'center',
+            borderStyle: 'solid',
+            borderWidth: 2,
+            borderColor: 'black',
+            
+        },
+        dataListOutputId:{
+            marginLeft: 25,
+            fontWeight: 'bold',
+            
+        },
+        dataListOutputUserId:{
+            marginLeft: 45,
+            fontWeight: 'bold'
+        },
+            dataListOutputTitle:{
+            marginLeft: 65,
+            fontWeight: 'bold',
+            width: 180
+        },
+       
+    })
+export default List;

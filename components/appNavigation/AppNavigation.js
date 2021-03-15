@@ -13,10 +13,29 @@ const Stack = createStackNavigator();
 export default function AppNavigation() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Splash">
-                <Stack.Screen name="Splash" component={SplashScreen} />
-                <Stack.Screen name="RestApi" component={RestApiScreen} />
-                <Stack.Screen name="Websocket" component={WebsocketScreen} />
+            <Stack.Navigator initialRouteName="Splash" >
+                <Stack.Screen 
+                    name="Splash" 
+                    component={SplashScreen} 
+                    options={{
+                        title: null,
+                    }} 
+                    />
+                    
+                <Stack.Screen 
+                    name="RestApi" 
+                    component={RestApiScreen} 
+                    options={{
+                        title: null,
+                    }} 
+                    />
+                <Stack.Screen
+                    name="Websocket" 
+                    component={WebsocketScreen} 
+                    options={{
+                        title: null,
+                    }} 
+                    />
             </Stack.Navigator>
         </NavigationContainer>
     )
