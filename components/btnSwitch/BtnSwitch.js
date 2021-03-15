@@ -3,20 +3,20 @@ import { Button, View, StyleSheet } from 'react-native';
 
 const BtnSwitch = ({ navigation }) => {
 
-   
+
     return (
         <View style={styles.container} >
-            <Button 
+            <Button
                 style={styles.btn}
-                title='Websocket' 
+                title='Websocket'
                 color='grey'
-                onPress={()=> navigation.navigate('Websocket')}
+                onPress={() => navigation.navigate('Websocket')}
             />
             <Button transparent
                 style={styles.btn}
-                title='Rest Api' 
+                title='Rest Api'
                 color='grey'
-                onPress={()=> navigation.navigate('RestApi')}
+                onPress={() => navigation.navigate('RestApi')}
             />
         </View>
     );
@@ -26,11 +26,10 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         position: 'absolute',
-        top: 630,      
+        top: 620,
         left: 100,
         flexDirection: 'row',
-
-    },
-  });
+    }
+});
 
 export default BtnSwitch;

@@ -4,8 +4,8 @@ import { Button } from 'native-base';
 import BtnSwitch from '../btnSwitch/BtnSwitch';
 
 
-function WebsocketScreen({navigation}) {
-    const [isPaused, setPause] = useState(true);
+function WebsocketScreen({ navigation }) {
+    const [isStart, setStart] = useState(true);
     const [orders, setOrders] = useState([]);
     const ws = useRef(null);
 
@@ -13,15 +13,13 @@ function WebsocketScreen({navigation}) {
 
     useEffect(() => {
         ws.current = new WebSocket("wss://ws.bitstamp.net");
-        ws.current.onopen = () => console.log("ws opened");
-        ws.current.onclose = () => console.log("ws closed");
 
         return () => {
             ws.current.close();
         };
     }, [currencyPair]);
 
-    
+
 
     const subscribe = {
         event: 'bts:subscribe',
@@ -38,35 +36,35 @@ function WebsocketScreen({navigation}) {
         };
 
         ws.current.onmessage = e => {
-            if (isPaused) return;
+            if (isStart) return;
             const message = JSON.parse(e.data);
-            // console.log("e", message);
             setOrders(message.data)
         };
-    }, [isPaused]);
+    }, [isStart]);
 
-    // const getLastElement = (col) => {
-    //     for(let i = 0; i <= col.length; i++){
-    //     return col[0];
-    //     }
-    // }
-   
+    const stylGr = {
+        color: 'green'
+    }
+
+    const stylRd = {
+        color: 'red'
+    }
 
     const { bids, asks } = orders;
+
     const orderRows = (arr) =>
-        arr &&
-        arr.map((item, index) => (
-            <View key={index}>
-                <Text> {item[0]} </Text>
-                {/* <Text> {item[100]} </Text> */}
-            {/* <Text> {getLastElement(item)} </Text> */}
-            </View>
-        ));
+    (
+        <View style={styles.changeColorView}>
+            <Text> {arr && arr.shift()[0]} </Text>
+            <Text style={(arr && arr.pop()[0]) > (arr && arr[arr.length - 2][0]) ? stylGr : stylRd} > {arr && arr.pop()[0]} </Text>
+            <Text style={(arr && arr[arr.length - 2][0]) < (arr && arr.pop()[0]) ? stylRd : stylGr} > {arr && arr[arr.length - 2][0]}</Text>
+        </View>
+    )
 
     const orderHead = (title) => (
-            <View>
-                <Text>{title}</Text>
-            </View>
+        <View>
+            <Text>{title}</Text>
+        </View>
     );
 
     return (
@@ -74,48 +72,56 @@ function WebsocketScreen({navigation}) {
             <View>
                 <Text style={styles.title}>Live Bitcoin rates</Text>
             </View>
-            <View>
+            <View style={styles.textView}>
                 <Text>{orderHead("Bids")}</Text>
                 <Text>{orderRows(bids)}</Text>
             </View>
 
-            <View>
+            <View style={styles.textView}>
                 <Text>{orderHead("Asks")}</Text>
                 <Text>{orderRows(asks)}</Text>
             </View>
 
             <View style={styles.btnView} >
-                <Button bordered 
-                        onPress={() => setPause(!isPaused)} 
-                        title={!isPaused ? "Stop/Start" : "Stop/Start"}
-                        style={styles.btn}
-                       >
-                <Text>Stop/Start</Text>
+                <Button bordered
+                    onPress={() => setStart(!isStart)}
+                    title={!isStart ? "Stop/Start" : "Stop/Start"}
+                    style={styles.btn}
+                >
+                    <Text>Stop/Start</Text>
                 </Button>
             </View>
-            <BtnSwitch navigation={navigation}/>
+            <BtnSwitch navigation={navigation} />
 
         </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         backgroundColor: 'white'
+
     },
-    title:{
+    title: {
         color: 'green',
         fontSize: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginBottom: 20
     },
-    btn:{
+    btn: {
         width: 170,
         flex: 1,
         justifyContent: 'center',
         borderColor: 'black',
         marginHorizontal: '30%',
-        marginVertical: 70,
+        marginVertical: 50,
     },
+    textView: {
+        marginTop: 20
+    },
+    changeColorView: {
+        flexDirection: 'row',
+    }
 
 })
 
