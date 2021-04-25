@@ -7,5 +7,5 @@ Screen with websocket shows rates on the screen. Every new received rate will be
 If the current rate is lower than the previous, then the rate displaying in Red. First rate received displaying in black.
 Start / Stop button will start or stop the rates ticker.
 1. Первый уровень 1
-    1. Второй уровень 1
-        1. Третий уровень 1
+2. Второй уровень 1
+3. Третий уровень 1
